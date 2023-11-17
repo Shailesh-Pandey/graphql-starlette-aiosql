@@ -2,16 +2,17 @@ import aiosql, sqlite3
 from ariadne import QueryType, make_executable_schema
 from ariadne.asgi import GraphQL
 from starlette.applications import Starlette
+import psycopg2
 
 # Define the GraphQL schema using SDL
 type_defs = """
 type Query {
-  users: [User!]!
+  users: [Users!]!
   hello: String!
   bye: String!
 }
 
-type User {
+type Users {
   id: String!
   name: String!
   email: String!
@@ -19,16 +20,26 @@ type User {
 """
 
 # Define the resolvers for the schema using Aiosql
-queries = aiosql.from_path("queries.sql", "sqlite3")
+#queries = aiosql.from_path("queries.sql", "sqlite3")
+queries = aiosql.from_path("queries2.sql", "psycopg2")
 query = QueryType()
 
 
-conn = sqlite3.connect("User.db") 
+#conn = sqlite3.connect("User.db")
+
+# Connect to the PostgreSQL database
+conn = psycopg2.connect(
+    dbname="postgres",
+    user="postgres",
+    password="pass123",
+    host="localhost",
+    port="5432"
+)
 
 #@query.field("users")
 #async def resolve_users(*_):
 #    return await queries.get_users(conn)
-	
+
 @query.field("users")
 def resolve_users(*_):
      rows = queries.get_users(conn)

@@ -1,11 +1,11 @@
 
 import sqlite3
 
-conn = sqlite3.connect("User.db")
+conn = sqlite3.connect("Users.db")
 cursor = conn.cursor()
 
 # create a table
-#cursor.execute("""CREATE TABLE User
+#cursor.execute("""CREATE TABLE Users
 #                 (id TEXT, name TEXT, email TEXT)
 #               """)
 
@@ -20,5 +20,5 @@ users = [('1', 'Mike','mike@mike.com'
           ),
          ('3','example', 'example@example.com'
 		 )]
-cursor.executemany("INSERT INTO User VALUES (?,?,?)", users)
+cursor.executemany("INSERT INTO Users VALUES (?,?,?)", users)
 conn.commit()
