@@ -5,9 +5,9 @@ conn = sqlite3.connect("Users.db")
 cursor = conn.cursor()
 
 # create a table
-#cursor.execute("""CREATE TABLE Users
-#                 (id TEXT, name TEXT, email TEXT)
-#               """)
+cursor.execute("""CREATE TABLE Users
+                 (id TEXT, name TEXT, email TEXT)
+               """)
 
 
 # save data

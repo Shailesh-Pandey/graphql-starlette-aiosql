@@ -10,6 +10,9 @@ type Query {
   users: [Users!]!
   hello: String!
   bye: String!
+  experiment(num: Int!): String!
+  get_user_by_name(name: String!): Users!
+  
 }
 
 type Users {
@@ -20,13 +23,14 @@ type Users {
 """
 
 # Define the resolvers for the schema using Aiosql
-#queries = aiosql.from_path("queries.sql", "sqlite3")
-queries = aiosql.from_path("queries2.sql", "psycopg2")
+queries = aiosql.from_path("queries.sql", "sqlite3")
+#queries = aiosql.from_path("queries2.sql", "psycopg2")
 query = QueryType()
 
 
-#conn = sqlite3.connect("User.db")
+conn = sqlite3.connect("Users.db")
 
+'''
 # Connect to the PostgreSQL database
 conn = psycopg2.connect(
     dbname="postgres",
@@ -35,6 +39,7 @@ conn = psycopg2.connect(
     host="localhost",
     port="5432"
 )
+'''
 
 #@query.field("users")
 #async def resolve_users(*_):
@@ -43,7 +48,7 @@ conn = psycopg2.connect(
 @query.field("users")
 def resolve_users(*_):
      rows = queries.get_users(conn)
-     json = {'id':0,'name':0,'email':0}
+     json = {}
      result = []
      for row in rows:
          json['id']=row[0]
@@ -56,10 +61,24 @@ def resolve_users(*_):
 def resolve_hello(*_):
     return "Hello world!"
 
+@query.field("experiment")
+def fun(*_, num):
+    return "hello "*num
+
 @query.field("bye")
 def resolve_hello(*_):
     return "Bye world!"
-	
+
+@query.field("get_user_by_name")
+def get_user_by_name(*_, name):
+    row = queries.get_user_by_name(conn,name)
+    result = {'id':'Null','name':'Null','email':'Null'}
+    if(row!=None):
+        result['id']=row[0]
+        result['name']=row[1]
+        result['email']=row[2]  
+    return result
+
 # Create a Starlette application and mount the GraphQL route using Ariadne
 schema = make_executable_schema(type_defs, query)
 app = Starlette()
