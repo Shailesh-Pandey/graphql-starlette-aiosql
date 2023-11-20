@@ -28,7 +28,7 @@ queries = aiosql.from_path("queries.sql", "sqlite3")
 query = QueryType()
 
 
-conn = sqlite3.connect("Users.db")
+conn = sqlite3.connect("Users.db", check_same_thread=False)
 
 '''
 # Connect to the PostgreSQL database
