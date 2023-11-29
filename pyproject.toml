@@ -11,6 +11,7 @@ aiosql = "^9.0"
 psycopg2 = "^2.9.9"
 ariadne = "^0.21"
 starlette = "^0.32.0.post1"
+uvicorn = "^0.24.0.post1"
 
 
 [build-system]
