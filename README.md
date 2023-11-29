@@ -1,6 +1,6 @@
 # graphql-starlette-aiosql  
 
-Poetry is used for package depedency and management.  
+Poetry is used for package depedency management.  
 (for steps to install: https://python-poetry.org/docs/)  
 
 To run (using poetry):  
